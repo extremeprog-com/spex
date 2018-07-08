@@ -8,7 +8,7 @@
   "files": [ ".git", "*" ],
   "scripts": {
     "postinstall": "mkdir .git/refs; git checkout .gitignore"
-  }
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
