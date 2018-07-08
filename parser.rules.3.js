@@ -1,3 +1,6 @@
+
+
+
 RegExp.prototype.toJSON = RegExp.prototype.toString;
 
 space = Symbol('space');
@@ -364,56 +367,56 @@ context2context = {
   // "": {}
 };
 
-var aop = require('../yucalc3/aop');
-
-aop.test(function() {
-  let pr = new ReParser_Rules();
-  
-  // pr.iterateSamples(samples);
-  
-  let i = 0;
-  
-  let sample = {
-    sample: [
-      // "SumIf(Table1:col1)",
-      "SumIf(Table1:col1, :col2 < 15, :col3 > 17)",
-      "SumIf(Table1:{col5 + col6})",
-      "SumIf(Table1:col1, :{col7 + col8} < 15)",
-    ],
-    context: [
-      "expression",
-    ],
-    decode: {
-      ""                        : { _: "lookup" },
-      "SumIf"                   : { _: "name", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/, wrap_spaces: true },
-      "Table1"                  : { _: "table*", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/, wrap_spaces: true },
-      ":col1"                   : { _: "result" },
-      "col1"                    : { _: "column", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/ },
-      ":{col5 + col6}"          : { _: "wrapped_result", },
-      "col5 + col6"             : { _: "expression", contains: "inline_expression" },
-      ":col2 < 15, :col3 > 17"  : { _: "filter[]", between: /,/ },
-      ":col2 < 15"              : { _: "filter" , space: 1 },
-      ":col2"                   : { _: "left_side" },
-      "col2"                    : { _: "column", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/ },
-      ":{col7 + col8} < 15 "    : { _: "filter[]" , space: 1 },
-      ":{col7 + col8} < 15"     : { _: "filter" , space: 1 },
-      ":{col7 + col8}"          : { _: "wrapped_left_side" , space: 1 },
-      "col7 + col8"             : { _: "expression", contains: "inline_expression", space: 1 },
-      "<"                       : { _: "operator", pattern: /((<|>)=?|==?=?|in)/ },
-      "15 "                     : { _: "value", contains: "inline_expression"  },
-    },
-  };
-  
-  pr.parse(samples);
-  
-  console.log(context2context);
-  
-});
-
-let pr = new ReParser_Rules();
-pr.parse(samples);
-
-global.context2context = context2context;
-// context2context[""] = context2context[">"];
-console.log(context2context);
-// throw "aaa";
+// var aop = require('../yucalc3/aop');
+//
+// aop.test(function() {
+//   let pr = new ReParser_Rules();
+//  
+//   // pr.iterateSamples(samples);
+//  
+//   let i = 0;
+//  
+//   let sample = {
+//     sample: [
+//       // "SumIf(Table1:col1)",
+//       "SumIf(Table1:col1, :col2 < 15, :col3 > 17)",
+//       "SumIf(Table1:{col5 + col6})",
+//       "SumIf(Table1:col1, :{col7 + col8} < 15)",
+//     ],
+//     context: [
+//       "expression",
+//     ],
+//     decode: {
+//       ""                        : { _: "lookup" },
+//       "SumIf"                   : { _: "name", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/, wrap_spaces: true },
+//       "Table1"                  : { _: "table*", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/, wrap_spaces: true },
+//       ":col1"                   : { _: "result" },
+//       "col1"                    : { _: "column", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/ },
+//       ":{col5 + col6}"          : { _: "wrapped_result", },
+//       "col5 + col6"             : { _: "expression", contains: "inline_expression" },
+//       ":col2 < 15, :col3 > 17"  : { _: "filter[]", between: /,/ },
+//       ":col2 < 15"              : { _: "filter" , space: 1 },
+//       ":col2"                   : { _: "left_side" },
+//       "col2"                    : { _: "column", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/ },
+//       ":{col7 + col8} < 15 "    : { _: "filter[]" , space: 1 },
+//       ":{col7 + col8} < 15"     : { _: "filter" , space: 1 },
+//       ":{col7 + col8}"          : { _: "wrapped_left_side" , space: 1 },
+//       "col7 + col8"             : { _: "expression", contains: "inline_expression", space: 1 },
+//       "<"                       : { _: "operator", pattern: /((<|>)=?|==?=?|in)/ },
+//       "15 "                     : { _: "value", contains: "inline_expression"  },
+//     },
+//   };
+//  
+//   pr.parse(samples);
+//  
+//   console.log(context2context);
+//  
+// });
+//
+// let pr = new ReParser_Rules();
+// pr.parse(samples);
+//
+// global.context2context = context2context;
+// // context2context[""] = context2context[">"];
+// console.log(context2context);
+// // throw "aaa";

@@ -597,171 +597,171 @@ class ReParser {
 
 console.log(ReParser.num2context);
 
-var aop = require('../yucalc3/aop');
+// var aop = require('../yucalc3/aop');
+//
+// aop.test(function() {
+//
+//   ReParser.context2context = {
+//     "": {
+//       to: {
+//         "ololo": {
+//           content: "ololo"
+//         },
+//         "instruction[]>": {
+//         }
+//       }
+//     },
+//     "/instruction[]>": {
+//       "to": {
+//         "instruction": {
+//           content: /[A-Z]/,
+//         }
+//       }
+//     },
+//     "/instruction[]": {
+//       "to": {
+//         "..": {
+//
+//         }
+//       }
+//     },
+//     "/instruction[]>/instruction": {
+//       "to": {
+//         "../instruction": {
+//           content: /[A-Z]/,
+//           between: ";"
+//         },
+//         "..": {
+//         },
+//       },
+//     },
+//   };
+//
+//
+//   var p  = new ReParser("A;A");
+//
+//   p.Event_ParseStart({pos: 0, });
+//   let i = 0;
+//   while(p._unhandled_events.length && i++ < 20) {
+//     console.log('iteration ', i);
+//     console.log(p);
+//     // console.log(p._unhandled_events);
+//     p._dispatchUnhandledEvent();
+//   }
+//
+//
+// });
 
-aop.test(function() {
-  
-  ReParser.context2context = {
-    "": {
-      to: {
-        "ololo": {
-          content: "ololo"
-        },
-        "instruction[]>": {
-        }
-      }
-    },
-    "/instruction[]>": {
-      "to": {
-        "instruction": {
-          content: /[A-Z]/,
-        }
-      }
-    },
-    "/instruction[]": {
-      "to": {
-        "..": {
-        
-        }
-      }
-    },
-    "/instruction[]>/instruction": {
-      "to": {
-        "../instruction": {
-          content: /[A-Z]/,
-          between: ";"
-        },
-        "..": {
-        },
-      },
-    },
-  };
-  
-  
-  var p  = new ReParser("A;A");
-  
-  p.Event_ParseStart({pos: 0, });
-  let i = 0;
-  while(p._unhandled_events.length && i++ < 20) {
-    console.log('iteration ', i);
-    console.log(p);
-    // console.log(p._unhandled_events);
-    p._dispatchUnhandledEvent();
-  }
-  
-  
-});
 
-
-aop.test(function() {
-  
-  ReParser.context2context = global.context2context;
-
-  // ReParser.parseRules([
-  //   {
-  //     sample: [
-  //       "SumIf(Table1:col1)",
-  //       "SumIf(Table1:col1, :col2 < 15, :col3 > 15)",
-  //       "SumIf(Table1:{col1 + col2})",
-  //       "SumIf(Table1:col1, :{col2 + col3} < 15)",
-  //     ],
-  //     context: [
-  //       "expression",
-  //       ""
-  //     ],
-  //     decode: {
-  //       ""                        : { _: "lookup" },
-  //       "SumIf"                   : { _: "name", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/, wrap_spaces: true },
-  //       "Table1"                  : { _: "table*", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/, wrap_spaces: true },
-  //       ":col1"                   : { _: "result", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/ },
-  //       "col1"                    : { _: "column", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/ },
-  //       ":{col1 + col2}"          : { _: "result", },
-  //       "col1 + col2"             : { _: "[inline_expression]", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/ },
-  //       ":col2 < 15, :col3 > 15"  : { _: "filter[]", between: /,/ },
-  //       ":col2 < 15"              : { _: "filter" , space: 1 },
-  //       "col2"                    : { _: "column", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/ },
-  //       ":{col2 + col3} < 15"     : { _: "filter" , space: 1 },
-  //       ":{col2 + col3}"          : { _: "expression" , space: 1 },
-  //       "col2 + col3"             : { _: "[inline_expression]" , space: 1 },
-  //       "<"                       : { _: "operator", pattern: /((<|>)=?|=|==|===|in)/ },
-  //       "15"                      : { _: "value", rule: "inline_expression" },
-  //       // before: /\s*\)\s*/, after: /\s*\)\s*/
-  //     },
-  //     transforms: {
-  //       y_to_js: function(node, tree, code = "") {
-  //         // console.log('start', starts.get(node));
-  //         // console.log('end', ends.get(node));
-  //         return `${node.name}(
-  //         function(n, {${node.result_expression}}) { return this.${node.result_expression}(n) },
-  //         function(n, {${node.filter.map(it=>it.column).join("\n")}, val}) { return this.${node.column}(n) ${node["operator"]} val }, ${node.value}
-  //       )`;
-  //         return `SumIf(
-  //         function(n, {col1}) { return this.col1(n) },
-  //         function(n, {col2, col3, val}) { return this.col2(n) < 15 }
-  //       )`;
-  //       }
-  //     }
-  //   },
-  // ]);
-  
-  var p ;
-  p = new ReParser("Lookup(Re:Ku)");
-  
-  p.Event_ParseStart({pos: 0, context: "/root>" });
-  let i;
-  i = 0;
-  while(p._unhandled_events.length && i++ < 2000) {
-    console.log('iteration ', i);
-    console.log(p);
-    console.log('unparsed:', JSON.stringify(p.source.substr(p.source.length - p.parsed_path[p.parsed_path.length - 1].content_length, p.source.length)));
-    // console.log(p._unhandled_events);
-    p._dispatchUnhandledEvent();
-  }
-  
-  console.log(p);
-  
-  var p ;
-  p = new ReParser("Lookup(Re:Ku, :Zu = 5)");
-
-  p.Event_ParseStart({pos: 0, context: "/root>"});
-  i = 0;
-  while(p._unhandled_events.length && i++ < 2000) {
-    console.log('iteration ', i);
-    console.log(p);
-    console.log('unparsed:', JSON.stringify(p.source.substr(p.source.length - p.parsed_path[p.parsed_path.length - 1].content_length, p.source.length)));
-    // console.log(p._unhandled_events);
-    p._dispatchUnhandledEvent();
-  }
-  
-  console.log(p);
-  
-  p  = new ReParser("Lookup(Re:Ku, :Zu = 5, :Du > 7, :Nu < 5)");
-
-  p.Event_ParseStart({pos: 0, context: "/root>"});
-  i = 0;
-  while(p._unhandled_events.length && i++ < 2000) {
-    console.log('iteration ', i);
-    console.log(p);
-    // console.log(p._unhandled_events);
-    p._dispatchUnhandledEvent();
-  }
-  
-  p  = new ReParser(` Lookup ( Re:Ku,
-                                  :Zu = 5,
-                                  :Du > 7,
-                                  :Nu < 5);suifuwo`);
-
-  p.Event_ParseStart({pos: 0, context: "/root>"});
-  i = 0;
-  while(p._unhandled_events.length && i++ < 2000) {
-    console.log('iteration ', i);
-    console.log(p);
-    // console.log(p._unhandled_events);
-    p._dispatchUnhandledEvent();
-  }
-  
-  
-});
+// aop.test(function() {
+//
+//   ReParser.context2context = global.context2context;
+//
+//   // ReParser.parseRules([
+//   //   {
+//   //     sample: [
+//   //       "SumIf(Table1:col1)",
+//   //       "SumIf(Table1:col1, :col2 < 15, :col3 > 15)",
+//   //       "SumIf(Table1:{col1 + col2})",
+//   //       "SumIf(Table1:col1, :{col2 + col3} < 15)",
+//   //     ],
+//   //     context: [
+//   //       "expression",
+//   //       ""
+//   //     ],
+//   //     decode: {
+//   //       ""                        : { _: "lookup" },
+//   //       "SumIf"                   : { _: "name", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/, wrap_spaces: true },
+//   //       "Table1"                  : { _: "table*", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/, wrap_spaces: true },
+//   //       ":col1"                   : { _: "result", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/ },
+//   //       "col1"                    : { _: "column", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/ },
+//   //       ":{col1 + col2}"          : { _: "result", },
+//   //       "col1 + col2"             : { _: "[inline_expression]", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/ },
+//   //       ":col2 < 15, :col3 > 15"  : { _: "filter[]", between: /,/ },
+//   //       ":col2 < 15"              : { _: "filter" , space: 1 },
+//   //       "col2"                    : { _: "column", pattern: /[A-Za-z$_][A-Za-z$_0-9]*/ },
+//   //       ":{col2 + col3} < 15"     : { _: "filter" , space: 1 },
+//   //       ":{col2 + col3}"          : { _: "expression" , space: 1 },
+//   //       "col2 + col3"             : { _: "[inline_expression]" , space: 1 },
+//   //       "<"                       : { _: "operator", pattern: /((<|>)=?|=|==|===|in)/ },
+//   //       "15"                      : { _: "value", rule: "inline_expression" },
+//   //       // before: /\s*\)\s*/, after: /\s*\)\s*/
+//   //     },
+//   //     transforms: {
+//   //       y_to_js: function(node, tree, code = "") {
+//   //         // console.log('start', starts.get(node));
+//   //         // console.log('end', ends.get(node));
+//   //         return `${node.name}(
+//   //         function(n, {${node.result_expression}}) { return this.${node.result_expression}(n) },
+//   //         function(n, {${node.filter.map(it=>it.column).join("\n")}, val}) { return this.${node.column}(n) ${node["operator"]} val }, ${node.value}
+//   //       )`;
+//   //         return `SumIf(
+//   //         function(n, {col1}) { return this.col1(n) },
+//   //         function(n, {col2, col3, val}) { return this.col2(n) < 15 }
+//   //       )`;
+//   //       }
+//   //     }
+//   //   },
+//   // ]);
+//
+//   var p ;
+//   p = new ReParser("Lookup(Re:Ku)");
+//
+//   p.Event_ParseStart({pos: 0, context: "/root>" });
+//   let i;
+//   i = 0;
+//   while(p._unhandled_events.length && i++ < 2000) {
+//     console.log('iteration ', i);
+//     console.log(p);
+//     console.log('unparsed:', JSON.stringify(p.source.substr(p.source.length - p.parsed_path[p.parsed_path.length - 1].content_length, p.source.length)));
+//     // console.log(p._unhandled_events);
+//     p._dispatchUnhandledEvent();
+//   }
+//
+//   console.log(p);
+//
+//   var p ;
+//   p = new ReParser("Lookup(Re:Ku, :Zu = 5)");
+//
+//   p.Event_ParseStart({pos: 0, context: "/root>"});
+//   i = 0;
+//   while(p._unhandled_events.length && i++ < 2000) {
+//     console.log('iteration ', i);
+//     console.log(p);
+//     console.log('unparsed:', JSON.stringify(p.source.substr(p.source.length - p.parsed_path[p.parsed_path.length - 1].content_length, p.source.length)));
+//     // console.log(p._unhandled_events);
+//     p._dispatchUnhandledEvent();
+//   }
+//
+//   console.log(p);
+//
+//   p  = new ReParser("Lookup(Re:Ku, :Zu = 5, :Du > 7, :Nu < 5)");
+//
+//   p.Event_ParseStart({pos: 0, context: "/root>"});
+//   i = 0;
+//   while(p._unhandled_events.length && i++ < 2000) {
+//     console.log('iteration ', i);
+//     console.log(p);
+//     // console.log(p._unhandled_events);
+//     p._dispatchUnhandledEvent();
+//   }
+//
+//   p  = new ReParser(` Lookup ( Re:Ku,
+//                                   :Zu = 5,
+//                                   :Du > 7,
+//                                   :Nu < 5);suifuwo`);
+//
+//   p.Event_ParseStart({pos: 0, context: "/root>"});
+//   i = 0;
+//   while(p._unhandled_events.length && i++ < 2000) {
+//     console.log('iteration ', i);
+//     console.log(p);
+//     // console.log(p._unhandled_events);
+//     p._dispatchUnhandledEvent();
+//   }
+//
+//
+// });
 
 
 

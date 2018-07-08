@@ -1,5 +1,5 @@
 require('./estimator');
-let aop = require('../yucalc3/aop');
+// let aop = require('../yucalc3/aop');
 let event_switcher = require('./event_switcher.js');
 let ReGenerator = require('./ReGenerator');
 
@@ -420,7 +420,7 @@ let SpEx = module.exports = function(sample, {where, ...options}) {
 
 
 
-estimate.finish=23:00
+estimate.finish=00:08
 `;
 
 
@@ -428,124 +428,124 @@ estimate.finish=23:00
 
 
 
-aop.test(function() {
-  console.log();
-  console.log("# search for", "xxx:yyy", 'aaa', 'bbb', 'aaa:bbb');
-  var spexpr = new SpEx(
-    "xxx:yyy",
-    {
-      where: {
-        "xxx" : { value: ['aaa'] }, // только классы символов и квантификаторы
-        "yyy" : { value: ['bbb'] },
-      }
-    }
-  );
-  var x = spexpr.search("aaa:bbb");
-  console.log('found result', x);
-});
-
-aop.test.repeat({
-  "aaa:bbb" : "sdfjs dsioj:fsj siodj sdj ios",
-  "aaa"     : "dsioj",
-  "bbb"     : "fsj",
-}, it=> eval(it));
-
-aop.test(function() {
-
-  var spexpr = new SpEx(
-    "aaa:bbb",
-    {
-      where: {
-        "aaa" : { value: ['aaa'] }, // только классы символов и квантификаторы
-        "bbb" : { value: ['bbb'] },
-      }
-    }
-  );
-
-  var x = spexpr.search(" _d  ij s _o iqw oq _t_bl1:col1 aaa:bbb soid _t_bl2:col3 (_t_bl3:col3)  sdfsd _t_bl4:col4 //_t_bl5:col5  oe wioe oiw");
-
-  console.log(x);
-
-
-  var spexpr = new SpEx(
-    "tablename:colname",
-    {
-      notLike: [
-        "'tablename:colname'",
-        "(tablename:colname)",
-        "//tablename:colname",
-        "asd//tablename:colname[zzz]",
-      ],
-      where: {
-        "tablename" : { name: "table_name"  , extract: /_[a-zA-Z$_],[a-zA-Z0-9$_]*/ }, // только классы символов и квантификаторы
-        "colname"   : { name: "column_name" , value: ["col1", "col3"] },
-        "asd"       : { name: "some_key"    , extract: /[a-zA-Z$_]+/ },
-      }
-    }
-  );
-
-  let m;
-  var x = spexpr.search(m = " _ada  aij as _ao iqw oq '_t,bl1:col1' soid _t,bl2:col3 (_t,bl3:col3)  sdfsd //_t,bl5:col5 dwd//_t,bl5:col5 oe wioe _t,bl4:col1 oiw");
-  console.log(x);
-  var z = x.rpos;
-  var x = spexpr.search(m, z);
-
-  console.log(x);
-
-
-
-  // spexpr.translate("hupa-zupa");
-
-  var spexpr = new SpEx(
-    "colname",
-    {
-      notLike: [
-        ":colname",
-        "colname(",
-        "colname (",
-        // "wrongTableName.colname",
-      ],
-      where: {
-        "colname": { extract: /[a-zA-Z0-9$_]+/, value: [ 'co1l', 'col2', 'col3' ] }, // только классы символов и квантификаторы
-        " ": {extract: /\s+/},
-        "zuzu": { _: "root" },
-        // "wrongTableName": { _: "table", fn_check: function({root, table}) { return tables[table][root] } }
-      }
-    }
-  )
-    .translator("colname(n)");
-  let translate_result = spexpr.translate(" console.log(col1(m), col2, col3)");
-    
-  console.log('translate_result', translate_result);
-
-  console.log(spexpr.search('dsf dsf dsf:col3'));
-
-  // spexpr.translate("hupa-zupa");
-
-  // var spexpr = new SpEx(
-  //   "/division_expression",
-  //   {
-  //     notLike: [
-  //       "/*",
-  //       "//",
-  //       "/_check_divider(",
-  //       "[invalid_context]/_check_divider(",
-  //     ],
-  //     where: {
-  //       "division_expression": { fn_check: {} }, // только классы символов и квантификаторы
-  //       " ": {extract: /\s+/},
-  //       "[invalid_context]": { /* check that we are not in comment or string */}
-  //     }
-  //   }
-  // ).translator("colname(n)", {
-  //   "": {
-  //
-  //   }
-  // });
-  //
-  // spexpr.translate("hupa-zupa");
-
-});
+// aop.test(function() {
+//   console.log();
+//   console.log("# search for", "xxx:yyy", 'aaa', 'bbb', 'aaa:bbb');
+//   var spexpr = new SpEx(
+//     "xxx:yyy",
+//     {
+//       where: {
+//         "xxx" : { value: ['aaa'] }, // только классы символов и квантификаторы
+//         "yyy" : { value: ['bbb'] },
+//       }
+//     }
+//   );
+//   var x = spexpr.search("aaa:bbb");
+//   console.log('found result', x);
+// });
+//
+// aop.test.repeat({
+//   "aaa:bbb" : "sdfjs dsioj:fsj siodj sdj ios",
+//   "aaa"     : "dsioj",
+//   "bbb"     : "fsj",
+// }, it=> eval(it));
+//
+// aop.test(function() {
+//
+//   var spexpr = new SpEx(
+//     "aaa:bbb",
+//     {
+//       where: {
+//         "aaa" : { value: ['aaa'] }, // только классы символов и квантификаторы
+//         "bbb" : { value: ['bbb'] },
+//       }
+//     }
+//   );
+//
+//   var x = spexpr.search(" _d  ij s _o iqw oq _t_bl1:col1 aaa:bbb soid _t_bl2:col3 (_t_bl3:col3)  sdfsd _t_bl4:col4 //_t_bl5:col5  oe wioe oiw");
+//
+//   console.log(x);
+//
+//
+//   var spexpr = new SpEx(
+//     "tablename:colname",
+//     {
+//       notLike: [
+//         "'tablename:colname'",
+//         "(tablename:colname)",
+//         "//tablename:colname",
+//         "asd//tablename:colname[zzz]",
+//       ],
+//       where: {
+//         "tablename" : { name: "table_name"  , extract: /_[a-zA-Z$_],[a-zA-Z0-9$_]*/ }, // только классы символов и квантификаторы
+//         "colname"   : { name: "column_name" , value: ["col1", "col3"] },
+//         "asd"       : { name: "some_key"    , extract: /[a-zA-Z$_]+/ },
+//       }
+//     }
+//   );
+//
+//   let m;
+//   var x = spexpr.search(m = " _ada  aij as _ao iqw oq '_t,bl1:col1' soid _t,bl2:col3 (_t,bl3:col3)  sdfsd //_t,bl5:col5 dwd//_t,bl5:col5 oe wioe _t,bl4:col1 oiw");
+//   console.log(x);
+//   var z = x.rpos;
+//   var x = spexpr.search(m, z);
+//
+//   console.log(x);
+//
+//
+//
+//   // spexpr.translate("hupa-zupa");
+//
+//   var spexpr = new SpEx(
+//     "colname",
+//     {
+//       notLike: [
+//         ":colname",
+//         "colname(",
+//         "colname (",
+//         // "wrongTableName.colname",
+//       ],
+//       where: {
+//         "colname": { extract: /[a-zA-Z0-9$_]+/, value: [ 'co1l', 'col2', 'col3' ] }, // только классы символов и квантификаторы
+//         " ": {extract: /\s+/},
+//         "zuzu": { _: "root" },
+//         // "wrongTableName": { _: "table", fn_check: function({root, table}) { return tables[table][root] } }
+//       }
+//     }
+//   )
+//     .translator("colname(n)");
+//   let translate_result = spexpr.translate(" console.log(col1(m), col2, col3)");
+//
+//   console.log('translate_result', translate_result);
+//
+//   console.log(spexpr.search('dsf dsf dsf:col3'));
+//
+//   // spexpr.translate("hupa-zupa");
+//
+//   // var spexpr = new SpEx(
+//   //   "/division_expression",
+//   //   {
+//   //     notLike: [
+//   //       "/*",
+//   //       "//",
+//   //       "/_check_divider(",
+//   //       "[invalid_context]/_check_divider(",
+//   //     ],
+//   //     where: {
+//   //       "division_expression": { fn_check: {} }, // только классы символов и квантификаторы
+//   //       " ": {extract: /\s+/},
+//   //       "[invalid_context]": { /* check that we are not in comment or string */}
+//   //     }
+//   //   }
+//   // ).translator("colname(n)", {
+//   //   "": {
+//   //
+//   //   }
+//   // });
+//   //
+//   // spexpr.translate("hupa-zupa");
+//
+// });
 
 
 function ni(descr) {

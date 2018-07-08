@@ -1,5 +1,4 @@
 let {ReParser} = require('./parser3');
-let aop = require('../yucalc3/aop');
 
 let __debug = {};
 
@@ -292,53 +291,55 @@ class ReParserWalker {
   }
 }
 
-false && aop.test(function() {
-  let pr = new ReParser(`
-      SumIf(
-                  Received_recoveries:Total_recovery_received_from_reinsurer,
-                  :Claim_num = Claim_num,
-                  :Category = APRA_Class_Code_Adj
-              )
-  `);
-  
-  
-  pr.parse();
-  
-  let prwalker = new ReParserWalker(pr);
-  let walker = prwalker.walk();
-  
-  console.log(walker);
-  console.log(walker.lookup.filter[1])
-  
-  // console.log(pr);
-  
-});
-
-aop.test(function() {
-  let pr = new ReParser(`
-    SumIf(non_CAT_retention_lookup:Treaty_identifier,
-      :Partners_affected in set(Partner_Group, "H40B"),
-      :Classes         == APRA_class_code,
-      :Year_Commencing <= new Date(Innuring_2_Applicable_Date),
-      :Year_ending     >= new Date(Innuring_2_Applicable_Date),
-      :Attachment_Type == "Risk Attaching",
-      :Inurring__2     == "Y");
-  `);
-
-
-  pr.parse();
-
-  let prwalker = new ReParserWalker(pr);
-  let walker = prwalker.walk();
-
-  console.log(walker);
-  console.log('walker.lookup', walker.lookup);
-  console.log('walker.lookup.filter[0]', walker.lookup.filter[0]);
-  console.log('walker.lookup.filter[1]', walker.lookup.filter[1]);
-  
-  // console.log(pr);
-  
-});
+// let aop = require('../yucalc3/aop');
+//
+// false && aop.test(function() {
+//   let pr = new ReParser(`
+//       SumIf(
+//                   Received_recoveries:Total_recovery_received_from_reinsurer,
+//                   :Claim_num = Claim_num,
+//                   :Category = APRA_Class_Code_Adj
+//               )
+//   `);
+//
+//
+//   pr.parse();
+//
+//   let prwalker = new ReParserWalker(pr);
+//   let walker = prwalker.walk();
+//
+//   console.log(walker);
+//   console.log(walker.lookup.filter[1])
+//
+//   // console.log(pr);
+//
+// });
+//
+// aop.test(function() {
+//   let pr = new ReParser(`
+//     SumIf(non_CAT_retention_lookup:Treaty_identifier,
+//       :Partners_affected in set(Partner_Group, "H40B"),
+//       :Classes         == APRA_class_code,
+//       :Year_Commencing <= new Date(Innuring_2_Applicable_Date),
+//       :Year_ending     >= new Date(Innuring_2_Applicable_Date),
+//       :Attachment_Type == "Risk Attaching",
+//       :Inurring__2     == "Y");
+//   `);
+//
+//
+//   pr.parse();
+//
+//   let prwalker = new ReParserWalker(pr);
+//   let walker = prwalker.walk();
+//
+//   console.log(walker);
+//   console.log('walker.lookup', walker.lookup);
+//   console.log('walker.lookup.filter[0]', walker.lookup.filter[0]);
+//   console.log('walker.lookup.filter[1]', walker.lookup.filter[1]);
+//
+//   // console.log(pr);
+//
+// });
 
 
 

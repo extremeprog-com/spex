@@ -108,24 +108,24 @@ class ReGenerator {
 
 module.exports = ReGenerator;
 
-let aop = require('../yucalc3/aop.js');
-
-aop.test(function() {
-  let generator = new ReGenerator({
-    "table.Lookup(({col1}, n) => col1(n), ((_) => ({col2}, n) => col2(n) == _ )(val2) , ((_) => ({col3}) => col3(n) >= _ )(val3) )": { _: "lookup." },
-    "table"  : { _: "result.table" },
-    "Lookup" : { _: "name" },
-    "col1"   : { _: "result.column" },
-    "((_) => ({col2}, n) => col2(n) == _ )(val2) , ((_) => ({col3}) => col3(n) >= _ )(val3)"
-      : { _: "filter[]", between: " , ", keep_spaces: true },
-    "col2"   : { _: "column" },
-    "=="     : { _: "operator" },
-    "val2"   : { _: "value" },
-  });
-  
-  console.log('zzz', generator.generate({lookup: {name: 'SumIf', result: {table: "tab_zizi", column: "Col1"}, filter: [{column: 'colX', operator: "===", value: "zuzu"},{column: 'colP', operator: ">=", value: "puzu"},]}}));
-  
-});
+// let aop = require('../yucalc3/aop.js');
+//
+// aop.test(function() {
+//   let generator = new ReGenerator({
+//     "table.Lookup(({col1}, n) => col1(n), ((_) => ({col2}, n) => col2(n) == _ )(val2) , ((_) => ({col3}) => col3(n) >= _ )(val3) )": { _: "lookup." },
+//     "table"  : { _: "result.table" },
+//     "Lookup" : { _: "name" },
+//     "col1"   : { _: "result.column" },
+//     "((_) => ({col2}, n) => col2(n) == _ )(val2) , ((_) => ({col3}) => col3(n) >= _ )(val3)"
+//       : { _: "filter[]", between: " , ", keep_spaces: true },
+//     "col2"   : { _: "column" },
+//     "=="     : { _: "operator" },
+//     "val2"   : { _: "value" },
+//   });
+//
+//   console.log('zzz', generator.generate({lookup: {name: 'SumIf', result: {table: "tab_zizi", column: "Col1"}, filter: [{column: 'colX', operator: "===", value: "zuzu"},{column: 'colP', operator: ">=", value: "puzu"},]}}));
+//
+// });
 
 
 
