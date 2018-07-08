@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "postinstall": "mkdir .git/refs; git checkout .gitignore; git update-index --skip-worktree package.json .npmignore"
+    "postinstall": "mkdir .git/refs; git checkout .gitignore; git update-index --skip-worktree package.json"
   },
   "files": [
     ".git",
