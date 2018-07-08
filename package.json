@@ -5,7 +5,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "files": [ ".git", "*", ".gitignore", ".git/refs", ".git/refs/**", ".git/refs/**/*" ],
+  "files": [ ".git", "*" ],
+  "scripts": {
+    "postinstall": "mkdir .git/refs; git checkout .gitignore"
+  }
   "author": "",
   "license": "ISC",
   "dependencies": {
