@@ -1,5 +1,5 @@
 require('./estimator');
-// let aop = require('../yucalc3/aop');
+// let aop = require('./aop.js');
 let event_switcher = require('./event_switcher.js');
 let ReGenerator = require('./ReGenerator');
 
@@ -177,11 +177,16 @@ let SpEx = module.exports = function(sample, {where, ...options}) {
     }
   }
   
+  
   if(options.notLike) {
-    this.like_sequences = [];
-    for(var like_sample of options.notLike) {
-      this.like_sequences.push(parse_sample_to_sequence(like_sample, true));
+    this.not_like_sequences = [];
+    for(var not_like_sample of options.notLike) {
+      this.not_like_sequences.push(parse_sample_to_sequence(not_like_sample, true));
     }
+    // this.like_sequences = [];
+    // for(var like_sample of options.notLike) {
+    //   this.like_sequences.push(parse_sample_to_sequence(like_sample, true));
+    // }
   }
   
   $$$.parsed_like_samples && $$$.parsed_like_samples(_=>eval(_));
@@ -303,7 +308,8 @@ let SpEx = module.exports = function(sample, {where, ...options}) {
       result.pos = result.lpos;
       
       let like_found = false;
-      if(options.like || options.notLike){
+      if(options.like){
+      // if(options.like || options.notLike){
         iterate_likes:
         for(var i = 0; i < this.like_sequences.length; i++) {
           let seq = this.like_sequences[i];
@@ -331,19 +337,49 @@ let SpEx = module.exports = function(sample, {where, ...options}) {
           
           if(lpos >= 0 && rpos < string.length) {
             like_found = true;
-            if(options.notLike) {
-              continue next_char;
-            }
             if(options.like) {
               break
             }
           }
         }
         
-        if(options.like && !like_found) {
+        if(!like_found) {
           continue next_char;
         }
       }
+      
+      if(options.notLike) {
+        iterate_likes:
+          for(var i = 0; i < this.not_like_sequences.length; i++) {
+            let seq = this.not_like_sequences[i];
+            if(!seq.left_idx || !seq.right_idx) {
+              let root_idx = seq.indexOf(root_sample);
+              seq.left_idx  = root_idx - 1;
+              seq.right_idx = root_idx + 1;
+            }
+            var lpos = result.lpos - 1, substring_length;
+            for(var idx = seq.left_idx; idx >= 0 && lpos > 0; idx--, lpos -= substring_length) {
+              checkChars(string, lpos, seq[idx], false);
+              if(!check_result.found) {
+                continue iterate_likes;
+              }
+              substring_length = check_result.length;
+            }
+            var rpos = result.rpos + 1;
+            for(var idx = seq.right_idx; idx < seq.length && rpos < string.length; idx++, rpos += substring_length) {
+              checkChars(string, rpos, seq[idx]);
+              if(!check_result.found) {
+                continue iterate_likes;
+              }
+              substring_length = check_result.length;
+            }
+
+            if(lpos >= 0 && rpos < string.length) {
+              continue next_char;
+            }
+          }
+      }
+  
       this.root_sample_sequence.map(it=>it.name && (result[it.name] = it.found));
       $$$.finish_search && $$$.finish_search();
       return result;
@@ -420,14 +456,14 @@ let SpEx = module.exports = function(sample, {where, ...options}) {
 
 
 
-estimate.finish=00:08
+estimate.finish=16:37
 `;
 
 
 
 
 
-
+//
 // aop.test(function() {
 //   console.log();
 //   console.log("# search for", "xxx:yyy", 'aaa', 'bbb', 'aaa:bbb');
