@@ -1,4 +1,4 @@
-require('./estimator');
+//require('./estimator');
 // let aop = require('./aop.js');
 let event_switcher = require('./event_switcher.js');
 let ReGenerator = require('./ReGenerator');
@@ -238,7 +238,7 @@ let SpEx = module.exports = function(sample, {where, ...options}) {
         }
       }
       check_result.length = 0;
-    } else {
+    } else if(typeof rule.value !== 'undefined' || typeof rule === 'string') {
       var values = [];
   
       if(typeof rule === 'string') {
@@ -271,6 +271,35 @@ let SpEx = module.exports = function(sample, {where, ...options}) {
         check_result.found  = true;
         check_result.length = value.length;
       }
+    } else if(typeof rule.fn !== 'undefined') {
+
+       if(!ltr) {
+          throw new Error('RTL direction is not supported for functions', rule);
+       }
+       var res = {
+          continue: 1, // usually 1, or distance to jump
+          found   : 0, // 0 means "not found yet", 1 means "found", -1 means "report that it cannot be a value"
+       };
+       var last_result = '';
+
+       for(var i = start_pos; res.continue && (i < string.length + 1); i += res.continue) {
+          res.continue = 1;
+          res.found    = 0;
+          var substr = string.substring(start_pos, i + 1);
+          rule.fn(substr, res, string, start_pos, i + 1);
+          if(res.found) {
+             last_result = substr;
+          }
+       }
+
+       if(last_result) {
+          check_result.found  = true;
+          check_result.length = last_result.length;
+       }
+
+    } else {
+       console.log('Unknown parsing rule', rule);
+       throw new Error('Unknown parsing rule');
     }
   };
   
@@ -388,11 +417,11 @@ let SpEx = module.exports = function(sample, {where, ...options}) {
   
   var regenerator;
   
-  this.translator = (re_sample, rg_options) => {
+  this.translator = (re_sample, rg_options = {}) => {
     
     var _options = {};
   
-    console.log('options.where', where);
+    // console.log('options.where', where);
     _options[re_sample] = { fill: "value." };
     _options[sample] = { fill: "result" };
     for(var i in where) {
@@ -400,7 +429,7 @@ let SpEx = module.exports = function(sample, {where, ...options}) {
         fill: where[i].name
       }
     }
-    console.log('regenerator', re_sample, _options);
+    // console.log('regenerator', re_sample, _options);
   
     regenerator = new ReGenerator(_options);
     
@@ -413,10 +442,10 @@ let SpEx = module.exports = function(sample, {where, ...options}) {
       
       while(result = this.search(text, pos)) {
         let subst = regenerator.generate({value: result});
-        console.log('text was', text);
+        // console.log('text was', text);
         text = text.substr(0, result.lpos) + subst + text.substr(result.rpos + 1);
-        console.log('text became', text);
-        pos = result.lpos + subst.length;
+        //console.log('text became', text);
+        pos = rg_options.recursive ? result.lpos + 1 : result.lpos + subst.length;
       }
   
       // return regenerator.generate(text);
@@ -456,7 +485,7 @@ let SpEx = module.exports = function(sample, {where, ...options}) {
 
 
 
-estimate.finish=16:37
+essdtimate.fifsnish=06:01
 `;
 
 
