@@ -263,7 +263,7 @@ let SpEx = module.exports = function(sample, {where, ...options}) {
               //
             }
           } else {
-              values.splice(t, 1);
+            //
           }
         }
       }
@@ -498,27 +498,27 @@ essdtimate.fifsnish=06:01
 
 
 // aop.test(function() {
-//   console.log();
-//   var code = '7 + B1 + row';
-//   var spexpr = new SpEx(
-//     "rowCount",
-//     {
-//       notLike: [
-//         '.rowCount',
-//         'rowCount.',
-//         'rowCount(',
-//         'rowCount (',
-//         'XrowCount',
-//         'rowCountX',
-//       ],
-//       where: {
-//         " ": {extract: /\s+/},
-//         "X": {extract: /[a-zA-Z0-9$_]+/},
-//       }
-//     }
-//   );
-//   var x = spexpr.search(code);
-//   console.log('found result', x);
+  console.log();
+  var code = '7 + B1 + rowCount';
+  var spexpr = new SpEx(
+    "rowCount",
+    {
+      notLike: [
+        '.rowCount',
+        'rowCount.',
+        'rowCount(',
+        'rowCount (',
+        'XrowCount',
+        'rowCountX',
+      ],
+      where: {
+        " ": {extract: /\s+/},
+        "X": {extract: /[a-zA-Z0-9$_]+/},
+      }
+    }
+  );
+  var x = spexpr.search(code);
+  console.log('found result', x);
 // });
 
 
