@@ -260,12 +260,19 @@ let SpEx = module.exports = function(sample, {where, ...options}) {
             if(string[pos] !== values[t][ltr ? idx : values[t].length - idx - 1]) {
               values.splice(t, 1);
             } else {
-              // 
+              //
             }
+          } else {
+              values.splice(t, 1);
           }
         }
       }
       
+      for(t = values.length;t--;) {
+        if(idx < values[t].length) {
+          values.splice(t, 1);
+        }
+      }
       if(values.length) {
         var value = values.reduce((r,it) => it.length > r.length ? it : r, values[0]);
         check_result.found  = true;
@@ -489,6 +496,30 @@ essdtimate.fifsnish=06:01
 `;
 
 
+
+// aop.test(function() {
+//   console.log();
+//   var code = '7 + B1 + row';
+//   var spexpr = new SpEx(
+//     "rowCount",
+//     {
+//       notLike: [
+//         '.rowCount',
+//         'rowCount.',
+//         'rowCount(',
+//         'rowCount (',
+//         'XrowCount',
+//         'rowCountX',
+//       ],
+//       where: {
+//         " ": {extract: /\s+/},
+//         "X": {extract: /[a-zA-Z0-9$_]+/},
+//       }
+//     }
+//   );
+//   var x = spexpr.search(code);
+//   console.log('found result', x);
+// });
 
 
 
