@@ -81,7 +81,6 @@ let SpEx = module.exports = function (sample, {where, ...options}) {
       let seq = [];
 
       if (parse_root_sample) {
-         debugger;
          let found = 0;
          sample_to_parse = sample_to_parse.replace(new RegExp(sample.replace(/([\]\[\/{}.?*\\])/g, "\\$1"), "g"), function () {
             found++;
