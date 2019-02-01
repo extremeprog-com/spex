@@ -81,8 +81,9 @@ let SpEx = module.exports = function (sample, {where, ...options}) {
       let seq = [];
 
       if (parse_root_sample) {
+         debugger;
          let found = 0;
-         sample_to_parse = sample_to_parse.replace(new RegExp(sample.replace(/[\]\[\/{}.?*\\]/g, "\$0"), "g"), function () {
+         sample_to_parse = sample_to_parse.replace(new RegExp(sample.replace(/([\]\[\/{}.?*\\])/g, "\\$1"), "g"), function () {
             found++;
             dynamic_patterns.push(root_sample);
             return "\0\1\2" + x + "\2\1\0"
@@ -505,25 +506,47 @@ let SpEx = module.exports = function (sample, {where, ...options}) {
 essdtimate.fifsnish=06:01
 `;
 
-
 aop && aop.test(function() {
    console.log();
-   var code = 'Close_(row)';
-   var spexpr = new SpEx(
-      "linked_table_colname",
+   var code = `
+   // x
+   return z/5`;
+   spexpr = new SpEx(
+      "/ divider_expression",
       {
-         like: [
-            "linked_table_colname(",
-            "linked_table_colname (",
-         ],
          notLike: [
-            ".linked_table_colname",
-            "Xlinked_table_colname",
+            '*/ divider_expression',
+            '// divider_expression',
          ],
          where: {
-            " ": {extract: /\s+/},
-            "X": {extract: /[A-Za-z0-9]/},
-            "linked_table_colname": {extract: /[a-zA-Z0-9$_]+/, value: ['Close_', 'Open_']}
+            " ": {extract: /\s*/},
+            "divider_expression": {
+               name: 'divider_expression', fn: (substr, res, string, begin_pos, end_pos) => {
+
+                  // console.log('try divider', substr);
+                  // console.log('kuku',JSON.stringify(substr), JSON.stringify(string.substring(begin_pos, end_pos)), string[end_pos], '+-*/^,%;?:'.indexOf(string[end_pos]) > -1);
+
+                  // if (string.substr(end_pos, 2) === '//') {
+                  //    res.continue = false;
+                  //    return
+                  // }
+
+                  if(substr === '"' || substr === "'") {
+                     res.continue = false;
+                  }
+                  try {
+                     new Function("(()=> 5 + " + substr + ')');
+                     res.found = 1;
+                     // console.log('kuku',JSON.stringify(substr), JSON.stringify(string.substring(begin_pos, end_pos)), string[end_pos], '+-*/^,%;?:'.indexOf(string[end_pos]) > -1);
+                     if ('+-*/^,%;?:'.indexOf(string[end_pos]) > -1) {
+                        // console.log('zuzu',substr, string[end_pos], '+-*/^,%;?:'.indexOf(string[end_pos]) > -1);
+                        res.continue = false;
+                     }
+                  } catch (e) {
+                     // console.log('wrong iteration ', e)
+                  }
+               }
+            }
          }
       }
    );
@@ -531,30 +554,55 @@ aop && aop.test(function() {
    console.log('found result', x);
 });
 
-
-aop && aop.test(function() {
-  console.log();
-  var code = '7 + B1 + rowCount';
-  var spexpr = new SpEx(
-    "rowCount",
-    {
-      notLike: [
-        '.rowCount',
-        'rowCount.',
-        'rowCount(',
-        'rowCount (',
-        'XrowCount',
-        'rowCountX',
-      ],
-      where: {
-        " ": {extract: /\s+/},
-        "X": {extract: /[a-zA-Z0-9$_]+/},
-      }
-    }
-  );
-  var x = spexpr.search(code);
-  console.log('found result', x);
-});
+// aop && aop.test(function() {
+//    console.log();
+//    var code = 'Close_(row)';
+//    var spexpr = new SpEx(
+//       "linked_table_colname",
+//       {
+//          like: [
+//             "linked_table_colname(",
+//             "linked_table_colname (",
+//          ],
+//          notLike: [
+//             ".linked_table_colname",
+//             "Xlinked_table_colname",
+//          ],
+//          where: {
+//             " ": {extract: /\s+/},
+//             "X": {extract: /[A-Za-z0-9]/},
+//             "linked_table_colname": {extract: /[a-zA-Z0-9$_]+/, value: ['Close_', 'Open_']}
+//          }
+//       }
+//    );
+//    var x = spexpr.search(code);
+//    console.log('found result', x);
+// });
+//
+//
+// aop && aop.test(function() {
+//   console.log();
+//   var code = '7 + B1 + rowCount';
+//   var spexpr = new SpEx(
+//     "rowCount",
+//     {
+//       notLike: [
+//         '.rowCount',
+//         'rowCount.',
+//         'rowCount(',
+//         'rowCount (',
+//         'XrowCount',
+//         'rowCountX',
+//       ],
+//       where: {
+//         " ": {extract: /\s+/},
+//         "X": {extract: /[a-zA-Z0-9$_]+/},
+//       }
+//     }
+//   );
+//   var x = spexpr.search(code);
+//   console.log('found result', x);
+// });
 
 // aop && aop.test(function() {
 //   console.log();
