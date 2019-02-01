@@ -99,7 +99,7 @@ let SpEx = module.exports = function (sample, {where, ...options}) {
          if (!where[i].name) {
             where[i].name = "$_" + _name_num++;
          }
-         sample_to_parse = sample_to_parse.replace(new RegExp(i.replace(/[\]\[\/{}.?*\\]/g, "\$0"), "g"), function () {
+         sample_to_parse = sample_to_parse.replace(new RegExp(i.replace(/([\]\[\/{}.?*\\])/g, "\\$1"), "g"), function () {
             dynamic_patterns.push(where[i]);
             if (where[i].extract instanceof RegExp) {
 
