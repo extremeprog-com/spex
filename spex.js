@@ -82,7 +82,7 @@ let SpEx = module.exports = function (sample, {where, ...options}) {
 
       if (parse_root_sample) {
          let found = 0;
-         sample_to_parse = sample_to_parse.replace(new RegExp(sample.replace(/([\]\[\/{}.?*\\])/g, "\\$1"), "g"), function () {
+         sample_to_parse = sample_to_parse.replace(new RegExp(sample.replace(/([\]\[\/{}().?*\\])/g, "\\$1"), "g"), function () {
             found++;
             dynamic_patterns.push(root_sample);
             return "\0\1\2" + x + "\2\1\0"
@@ -99,7 +99,7 @@ let SpEx = module.exports = function (sample, {where, ...options}) {
          if (!where[i].name) {
             where[i].name = "$_" + _name_num++;
          }
-         sample_to_parse = sample_to_parse.replace(new RegExp(i.replace(/([\]\[\/{}.?*\\])/g, "\\$1"), "g"), function () {
+         sample_to_parse = sample_to_parse.replace(new RegExp(i.replace(/([\]\[\/{}().?*\\])/g, "\\$1"), "g"), function () {
             dynamic_patterns.push(where[i]);
             if (where[i].extract instanceof RegExp) {
 
@@ -372,6 +372,9 @@ let SpEx = module.exports = function (sample, {where, ...options}) {
                         }
                         substring_length = check_result.length;
                      }
+                     if(idx < seq.length) {
+                        check_result.found = false;
+                     }
                      if (check_result.found || (check_result.found === null && seq.left_idx === seq.length) && rpos >= string.length) {
                         rpos = string.length - 1;
                      }
@@ -417,6 +420,9 @@ let SpEx = module.exports = function (sample, {where, ...options}) {
                            continue iterate_likes;
                         }
                         substring_length = check_result.length;
+                     }
+                     if(idx < seq.length) {
+                        check_result.found = false;
                      }
                      if (check_result.found || (check_result.found === null && seq.left_idx === seq.length) && rpos >= string.length) {
                         rpos = string.length - 1;
@@ -507,51 +513,82 @@ essdtimate.fifsnish=06:01
 
 aop && aop.test(function() {
    console.log();
-   var code = `
-   // x
-   return z/5`;
-   spexpr = new SpEx(
-      "/ divider_expression",
+   var code = "return Close_\n";
+   var spexpr = new SpEx(
+      "linked_table_colname",
       {
          notLike: [
-            '*/ divider_expression',
-            '// divider_expression',
+            ":linked_table_colname",
+            ".linked_table_colname(",
+            "linked_table_colname(",
+            "Xlinked_table_colname",
+            "linked_table_colname (",
          ],
          where: {
-            " ": {extract: /\s*/},
-            "divider_expression": {
-               name: 'divider_expression', fn: (substr, res, string, begin_pos, end_pos) => {
-
-                  // console.log('try divider', substr);
-                  // console.log('kuku',JSON.stringify(substr), JSON.stringify(string.substring(begin_pos, end_pos)), string[end_pos], '+-*/^,%;?:'.indexOf(string[end_pos]) > -1);
-
-                  // if (string.substr(end_pos, 2) === '//') {
-                  //    res.continue = false;
-                  //    return
-                  // }
-
-                  if(substr === '"' || substr === "'") {
-                     res.continue = false;
-                  }
-                  try {
-                     new Function("(()=> 5 + " + substr + ')');
-                     res.found = 1;
-                     // console.log('kuku',JSON.stringify(substr), JSON.stringify(string.substring(begin_pos, end_pos)), string[end_pos], '+-*/^,%;?:'.indexOf(string[end_pos]) > -1);
-                     if ('+-*/^,%;?:'.indexOf(string[end_pos]) > -1) {
-                        // console.log('zuzu',substr, string[end_pos], '+-*/^,%;?:'.indexOf(string[end_pos]) > -1);
-                        res.continue = false;
-                     }
-                  } catch (e) {
-                     // console.log('wrong iteration ', e)
-                  }
-               }
-            }
+            " ": {extract: /\s+/},
+            "X": {extract: /[A-Za-z0-9]/},
+            "linked_table_colname": {extract: /[a-zA-Z0-9$_]+/, value: ["Text_Date", "Open", "High", "Low", "Close_", "Adj_Close__", "Volume"]}
          }
       }
-   );
+   )
+   ;
    var x = spexpr.search(code);
    console.log('found result', x);
+   console.log('transformation result',
+      spexpr
+         .translator("linked_table_colname(row)")
+         .translate(code)
+   );
+
 });
+
+// aop && aop.test(function() {
+//    console.log();
+//    var code = `
+//    // x
+//    return z/5`;
+//    spexpr = new SpEx(
+//       "/ divider_expression",
+//       {
+//          notLike: [
+//             '*/ divider_expression',
+//             '// divider_expression',
+//          ],
+//          where: {
+//             " ": {extract: /\s*/},
+//             "divider_expression": {
+//                name: 'divider_expression', fn: (substr, res, string, begin_pos, end_pos) => {
+//
+//                   // console.log('try divider', substr);
+//                   // console.log('kuku',JSON.stringify(substr), JSON.stringify(string.substring(begin_pos, end_pos)), string[end_pos], '+-*/^,%;?:'.indexOf(string[end_pos]) > -1);
+//
+//                   // if (string.substr(end_pos, 2) === '//') {
+//                   //    res.continue = false;
+//                   //    return
+//                   // }
+//
+//                   if(substr === '"' || substr === "'") {
+//                      res.continue = false;
+//                   }
+//                   try {
+//                      new Function("(()=> 5 + " + substr + ')');
+//                      res.found = 1;
+//                      // console.log('kuku',JSON.stringify(substr), JSON.stringify(string.substring(begin_pos, end_pos)), string[end_pos], '+-*/^,%;?:'.indexOf(string[end_pos]) > -1);
+//                      if ('+-*/^,%;?:'.indexOf(string[end_pos]) > -1) {
+//                         // console.log('zuzu',substr, string[end_pos], '+-*/^,%;?:'.indexOf(string[end_pos]) > -1);
+//                         res.continue = false;
+//                      }
+//                   } catch (e) {
+//                      // console.log('wrong iteration ', e)
+//                   }
+//                }
+//             }
+//          }
+//       }
+//    );
+//    var x = spexpr.search(code);
+//    console.log('found result', x);
+// });
 
 // aop && aop.test(function() {
 //    console.log();
